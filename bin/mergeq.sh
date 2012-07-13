@@ -96,7 +96,7 @@ function push_to_merge_branch {
   status "Merging into $merge_branch"
   git fetch origin $merge_branch
   git checkout -q FETCH_HEAD
-  git merge --no-ff -s ours --no-commit $current
+  git merge --no-ff -s theirs --no-commit $current
   echo $current > .merge
   git add .merge
   git commit -m "Queuing merge: $branch into $target_branch"
