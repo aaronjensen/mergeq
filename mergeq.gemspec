@@ -4,8 +4,8 @@ require File.expand_path('../lib/mergeq/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Aaron Jensen"]
   gem.email         = ["aaronjensen@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{A set of scripts that enable merging after build. Useful if you'd rather run your tests on TeamCity.}
+  gem.summary       = %q{Get your CI (like TeamCity) to merge after builds pass with a queue of gated merges.}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
