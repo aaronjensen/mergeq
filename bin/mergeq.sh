@@ -96,7 +96,7 @@ function push_to_merge_branch {
   status "Merging into $merge_branch"
   git fetch origin $merge_branch
   git checkout -q FETCH_HEAD
-  git merge --no-ff -s recursive -X theirs --no-commit $current
+  git merge --no-ff -s ours --no-commit $current
   # make the merge branch match exactly before committing the merge
   # we do this so that bundle install will work when upgrading mergeq (ew)
   git checkout $current -- .
