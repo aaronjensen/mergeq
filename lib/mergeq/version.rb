@@ -1,3 +1,3 @@
 module Mergeq
-  VERSION = "0.0.111"
+  VERSION = "0.0.1111"
 end
