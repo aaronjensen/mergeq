@@ -15,9 +15,11 @@ function checkout_target_branch {
   status "Checking out $target_branch..."
   git fetch origin $target_branch
   git checkout -q -f FETCH_HEAD
+  git log -1
   status "Cleaning up working directory..."
   git reset --hard
   git clean -df
+  git log -1
 }
 
 function merge_branch_into_target_branch {
@@ -28,12 +30,14 @@ function merge_branch_into_target_branch {
   status "Merging into $target_branch..."
   git merge --no-ff --no-commit $head
   echo `git rev-parse $head^2` > .git/MERGE_HEAD
+  git log -1
 }
 
 function commit_merge {
   message=`git log -1 --pretty=%s $head`
   status "Committing merge ($message)..."
   git commit -m "$message"
+  git log -1
 }
 
 function merge {
@@ -47,6 +51,7 @@ function merge {
 function push {
   status "Pushing to $target_branch..."
   git push origin HEAD:$target_branch
+  git log -1
 }
 
 target_branch=${2:-"integration"}
