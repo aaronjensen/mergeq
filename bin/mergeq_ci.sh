@@ -7,10 +7,15 @@ function print_usage_and_exit {
   exit 1
 }
 
+function status {
+  echo "// $1"
+}
 
 function checkout_target_branch {
+  status "Checking out $target_branch..."
   git fetch origin $target_branch
-  git checkout -q FETCH_HEAD
+  git checkout -q -f FETCH_HEAD
+  status "Cleaning up working directory..."
   git reset --hard
   git clean -df
 }
@@ -20,12 +25,14 @@ function merge_branch_into_target_branch {
   # of whether or not we can fast forward merge.
   # and it copies over any merge conflict resolutions.
   # It's clearly black magic.
+  status "Merging into $target_branch..."
   git merge --no-ff --no-commit $head
   echo `git rev-parse $head^2` > .git/MERGE_HEAD
 }
 
 function commit_merge {
   message=`git log -1 --pretty=%s $head`
+  status "Committing merge ($message)..."
   git commit -m "$message"
 }
 
@@ -38,6 +45,7 @@ function merge {
 }
 
 function push {
+  status "Pushing to $target_branch..."
   git push origin HEAD:$target_branch
 }
 
