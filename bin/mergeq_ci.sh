@@ -27,10 +27,11 @@ function merge_branch_into_target_branch {
   # of whether or not we can fast forward merge.
   # and it copies over any merge conflict resolutions.
   # It's clearly black magic.
-  status "Merging into $target_branch..."
+  status "Merging $head into $target_branch..."
   git merge --no-ff --no-commit $head
-  echo `git rev-parse $head^2` > .git/MERGE_HEAD
-  git log -1
+  status "Updating MERGE_HEAD to $merge_head..."
+  echo $merge_head > .git/MERGE_HEAD
+  git status
 }
 
 function commit_merge {
@@ -42,6 +43,7 @@ function commit_merge {
 
 function merge {
   head=`git rev-parse HEAD^2`
+  merge_head=`git rev-parse HEAD^2^2`
 
   checkout_target_branch
   merge_branch_into_target_branch
