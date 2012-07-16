@@ -42,6 +42,7 @@ function commit_merge {
 }
 
 function merge {
+  status "Starting merge (on `git rev-parse HEAD`)..."
   head=`git rev-parse HEAD^2`
   merge_head=`git rev-parse HEAD^2^2`
 
