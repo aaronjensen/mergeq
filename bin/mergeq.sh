@@ -36,8 +36,6 @@ function checkout_target_branch {
 }
 
 function cleanup {
-  echo "
-Returning to $branch..."
   git checkout -q $branch
   rm .merging
 }
