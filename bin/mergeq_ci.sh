@@ -3,7 +3,7 @@ set -e
 action=$1
 
 function print_usage_and_exit {
-  echo "Usage: mergeq_ci <merge|push> [target-branch]"
+  echo "Usage: mergeq_ci <merge|push> <target-branch>"
   exit 1
 }
 
@@ -49,7 +49,15 @@ function push {
   git push origin HEAD:$target_branch
 }
 
-target_branch=${2:-"integration"}
+function validate_parameters {
+  if [ "$target_branch" = "" ] ; then
+    print_usage_and_exit
+  fi
+}
+
+target_branch=$2
+
+validate_parameters
 
 if [ "$action" = "merge" ] ; then
   merge

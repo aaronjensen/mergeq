@@ -1,6 +1,17 @@
 #!/bin/bash
-target_branch=${1:-"integration"}
+target_branch=$1
 merge_branch=${2:-"merge/$target_branch"}
+
+function validate_parameters {
+  if [ "$target_branch" = "" ] ; then
+    print_usage_and_exit
+  fi
+}
+
+function print_usage_and_exit {
+  echo "Usage: mergeq <target-branch> [merge-branch]"
+  exit 1
+}
 
 function status {
   echo "// $1"
@@ -124,5 +135,6 @@ then
   status "Continuing merge..."
   continue_merge
 else
+  validate_parameters
   start_merge
 fi
