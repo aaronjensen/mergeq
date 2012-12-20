@@ -132,8 +132,12 @@ then
   merge_branch=${branches[1]}
   target_branch=${branches[2]}
 
-  status "Continuing merge..."
-  continue_merge
+  read -p "Continue merge? " -n 1 -r
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+    status "Continuing merge..."
+    continue_merge
+  fi
 else
   validate_parameters
   start_merge
