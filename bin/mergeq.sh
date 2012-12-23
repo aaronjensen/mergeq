@@ -34,7 +34,7 @@ function exit_if_local_mods {
 }
 
 function merge_failed {
-  status "Doh. Your merge has conflicts, but don\'t worry:"
+  status "Doh. Your merge has conflicts, but don't worry:"
   echo
   echo 1. Fix your merge conflicts
   echo 2. Commit them
