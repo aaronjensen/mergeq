@@ -3,6 +3,12 @@ target_branch=$1
 merge_branch=${2:-"merge/$target_branch"}
 
 function validate_parameters {
+  if [ -f .merging ] ; then
+    echo "It looks like you're in the middle of a merge.
+If so, try mergeq --continue
+If not, delete the .merging file and try again."
+    exit 1
+  fi
   if [ "$target_branch" = "" ] ; then
     print_usage_and_exit
   fi
@@ -32,7 +38,7 @@ function merge_failed {
   echo
   echo 1. Fix your merge conflicts
   echo 2. Commit them
-  echo 3. Run mergeq again
+  echo 3. Run mergeq --continue
 
   exit 1
 }
@@ -125,15 +131,25 @@ function continue_merge {
   cleanup
 }
 
-if [ -f .merging ]
-then
-  IFS=';' read -ra branches < .merging
-  branch=${branches[0]}
-  merge_branch=${branches[1]}
-  target_branch=${branches[2]}
+if [ "$target_branch" = "--continue" ] ; then
+  if [ -f .merging ] ; then
+    IFS=';' read -ra branches < .merging
+    branch=${branches[0]}
+    merge_branch=${branches[1]}
+    target_branch=${branches[2]}
 
-  status "Continuing merge..."
-  continue_merge
+    status "Continuing merge..."
+    continue_merge
+  else
+    echo "
+**********************************************************
+
+ It doesn't look like you're in the middle of a merge.
+ Try mergeq <branch name> to start one
+
+**********************************************************"
+    exit 1
+  fi
 else
   validate_parameters
   start_merge
