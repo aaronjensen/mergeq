@@ -100,7 +100,7 @@ function exit_if_we_have_already_been_merged {
 
 **********************************************************"
     cleanup
-    exit 1
+    exit 0
   fi
   set -e
 }
