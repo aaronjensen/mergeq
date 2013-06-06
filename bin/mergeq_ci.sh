@@ -36,11 +36,29 @@ function commit_merge {
   git commit -m "$message"
 }
 
+function reset_and_exit_if_we_have_already_been_merged {
+  set +e
+  git diff --quiet FETCH_HEAD
+  if [ $? -eq 0 ]
+  then
+    echo "
+**********************************************************
+
+ This branch has already been merged into $target_branch
+
+**********************************************************"
+    git reset --hard FETCH_HEAD
+    exit 0
+  fi
+  set -e
+}
+
 function merge {
   head=`git rev-parse HEAD^2`
 
   checkout_target_branch
   merge_branch_into_target_branch
+  reset_and_exit_if_we_have_already_been_merged
   commit_merge
 }
 
