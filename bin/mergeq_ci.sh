@@ -33,7 +33,7 @@ function merge_branch_into_target_branch {
 function commit_merge {
   message=`git log -1 --pretty=%s $head`
   status "Committing merge ($message)..."
-  git commit -m "$message"
+  git commit -C $head --signoff
 }
 
 function reset_and_exit_if_we_have_already_been_merged {
