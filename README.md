@@ -16,33 +16,23 @@ Or install it yourself as:
 
     $ gem install mergeq
 
-## Usage
+Setup your mergeq directory
 
-Add `.mergeq/merging` to your project's `.gitignore`
-Create the merge target `merge/staging`
+    $ cd your_project
+    $ mkdir .mergeq
 
+Ignore the merging lock file in git
 
-## Pausing Guard
+    $ echo ".mergeq/merging" >> .gitignore
 
-```
-function pause_guard {
-  pid=$(guard_pid)
-  if [[ "$pid" ]]; then
-    kill -USR1 $pid
-  fi
-}
+Create branches that you want to make queueable. This example creates a branch called
+`staging` for queuing builds.
 
-function guard_pid {
-  ps ax | grep "[g]uard" | awk '{print $1}'
-}
-
-function unpause_guard {
-  pid=$(guard_pid)
-  if [[ "$pid" ]]; then
-    kill -USR2 $pid
-  fi
-}
-```
+    $ cd your_project && git checkout master
+    $ git checkout -b staging
+    $ git push -u origin staging
+    $ git checkout -b merge/staging
+    $ git push -u origin merge/staging
 
 ## Contributing
 
