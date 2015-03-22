@@ -126,7 +126,7 @@ function run_hook {
 
   [[ -f $hook ]] || return 0
 
-  status "Running mergeq hook $hook_name..."
+  status "Running hook: $hook_name..."
 
   eval "$hook \"$target_branch\" \"$merge_branch\""
   [[ $? -eq 0 ]] || exit $?
