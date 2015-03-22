@@ -49,48 +49,6 @@ project_dir=".mergeq"
 hooks_dir="$project_dir/hooks"
 merging_file="$project_dir/merging"
 
-function stop_zeus {
-  pid=$(zeus_pid)
-  if [[ "$pid" ]]; then
-    kill -USR1 $pid
-  fi
-}
-
-function zeus_pid {
-  cat $DIR/../tmp/zeus.pid 2> /dev/null
-}
-
-function start_zeus {
-  pid=$(zeus_pid)
-  if [[ "$pid" ]]; then
-    kill -USR2 $pid
-  fi
-}
-
-# TODO[dbalatero]: remove TEAMCITY
-function build_id {
-  if [ "$target_branch" = "integration" ] ; then
-    echo "bt101"
-  elif [ "$target_branch" = "current-feature" ] ; then
-    echo "bt157"
-  elif [ "$target_branch" = "master" ] ; then
-    echo "TeachingChannel_Production_1Merge"
-  fi
-}
-
-function start_build {
-  build_id=$(build_id)
-  git_ref=$(git rev-parse HEAD)
-  if [[ "$build_id" ]]; then
-    status "Starting build"
-
-    # TODO[dbalatero]: add back the ability to kick the build off.
-  else
-    status "No associated build to start, please update build_id"
-  fi
-}
-# END teamcity
-
 function validate_parameters {
   if [ -f $merging_file ] ; then
     echo -e "${red}It looks like you're in the middle of a merge.${default}
