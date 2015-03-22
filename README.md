@@ -20,6 +20,28 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+## Pausing Guard
+
+```
+function pause_guard {
+  pid=$(guard_pid)
+  if [[ "$pid" ]]; then
+    kill -USR1 $pid
+  fi
+}
+
+function guard_pid {
+  ps ax | grep "[g]uard" | awk '{print $1}'
+}
+
+function unpause_guard {
+  pid=$(guard_pid)
+  if [[ "$pid" ]]; then
+    kill -USR2 $pid
+  fi
+}
+```
+
 ## Contributing
 
 1. Fork it
