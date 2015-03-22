@@ -1,6 +1,6 @@
 # mergeq
 
-TODO: Write a gem description
+TODO: Write a project description
 
 ## Remote Installation (quick)
 
