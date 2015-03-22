@@ -53,6 +53,7 @@ a per-repo basis.
 
 *`mergeq_ci` hooks:*
 
+* `before_ci_startup` - this runs at the very beginning of the `mergeq_ci` script
 * `after_ci_merge` - this runs after CI merges into the target branch
 * `after_ci_push` - this runs after CI pushes the target branch back to origin
 
@@ -75,6 +76,9 @@ it doesn't freak out.
 
 #!/bin/bash
 
+target_branch=$1
+merge_branch=$2
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 function zeus_pid {
@@ -95,6 +99,9 @@ stop_zeus
 # .mergeq/hooks/after_cleanup
 
 #!/bin/bash
+
+target_branch=$1
+merge_branch=$2
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
