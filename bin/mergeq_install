@@ -1,0 +1,42 @@
+#!/bin/bash
+
+project_dir=$(pwd)
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+
+bin_dir="$project_dir/bin"
+mergeq_dir="$project_dir/.mergeq"
+
+function ensure_bin_dir {
+  mkdir -p $bin_dir
+}
+
+function ensure_mergeq_dir {
+  mkdir -p $mergeq_dir
+  touch $mergeq_dir/.gitkeep
+}
+
+function gitignore_merging_file {
+  gitignore_file=$project_dir/.gitignore
+
+  if [ ! -f $gitignore_file ]; then
+    touch $gitignore_file
+  fi
+
+  ignore=".mergeq/merging"
+
+  if ! grep -q $ignore $gitignore_file ; then
+    echo $ignore >> $gitignore_file
+  fi
+}
+
+function copy_mergeq_scripts_to_bin {
+  cp $script_dir/bin/mergeq $bin_dir
+  cp $script_dir/bin/mergeq_ci $bin_dir
+}
+
+ensure_mergeq_dir
+ensure_bin_dir
+
+copy_mergeq_scripts_to_bin
+
+gitignore_merging_file

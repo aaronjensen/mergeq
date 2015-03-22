@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+red='\033[0;31m'
+yellow='\033[0;33m'
+green='\033[0;32m'
+cyan='\033[0;36m'
+blue='\033[0;34m'
+default='\033[0m'
+
+function status {
+  echo -e "${cyan}// $1${default}"
+}
+
+# Ensure we don't have a stale copy of mergeq sitting around.
+rm -fr /tmp/mergeq
+
+status "Fetching mergeq from aaronjensen/mergeq..."
+git clone git@github.com:aaronjensen/mergeq.git /tmp/mergeq
+echo
+
+status "Installing mergeq to current project directory"
+/tmp/mergeq/bin/mergeq_install
+
+rm -fr /tmp/mergeq

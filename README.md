@@ -1,32 +1,31 @@
-# Mergeq
+# mergeq
 
-TODO: Write a gem description
+TODO: Write a project description
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'mergeq'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install mergeq
-
-Setup your mergeq directory
+## Remote Installation (quick)
 
     $ cd your_project
-    $ mkdir .mergeq
+    $ bash <(curl -s https://raw.githubusercontent.com/aaronjensen/mergeq/master/bin/mergeq_remote_install)
 
-Ignore the merging lock file in git
+You can always re-run this script to upgrade your project's copy of mergeq.
 
-    $ echo ".mergeq/merging" >> .gitignore
+If you don't trust `curl`, which is totally understandable, just do this:
 
-Create branches that you want to make queueable. This example creates a branch called
-`staging` for queuing builds.
+    $ curl -o mergeq_remote_install https://raw.githubusercontent.com/aaronjensen/mergeq/master/bin/mergeq_remote_install
+    $ chmod +x mergeq_remote_install
+
+    # open the install script and audit it for security
+
+    $ ./mergeq_remote_install
+
+Running `mergeq_remote_install` will add a few files, so be sure to commit them to your repo:
+
+    $ git status
+    $ git add .
+    $ git commit -m "Added mergeq to the project"
+
+Next, create branches that you want to make queueable. This example creates a branch 
+called `staging` for queuing builds.
 
     $ git push origin master:staging
     $ git push origin master:merge/staging
