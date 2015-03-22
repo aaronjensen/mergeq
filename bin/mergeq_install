@@ -12,7 +12,6 @@ function ensure_bin_dir {
 
 function ensure_mergeq_dir {
   mkdir -p $mergeq_dir
-  touch $mergeq_dir/.gitkeep
 }
 
 function gitignore_merging_file {
