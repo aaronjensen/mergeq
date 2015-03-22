@@ -169,23 +169,23 @@ function write_temp_file {
 function start_merge {
   status "Starting merge..."
   set -e
- 
+
   exit_if_local_mods
   run_hooks
- 
+
   branch=`git rev-parse --abbrev-ref HEAD`
- 
+
   checkout_target_branch
   write_temp_file
   try_to_merge
- 
+
   continue_merge
 }
- 
+
 function push_failed {
   status "Your push failed, someone may have beat you. Try again?"
 }
- 
+
 function exit_if_we_have_already_been_merged {
   set +e
   git fetch origin $target_branch
@@ -203,10 +203,10 @@ function exit_if_we_have_already_been_merged {
   fi
   set -e
 }
- 
+
 function push_to_merge_branch {
   current=`git rev-parse HEAD`
- 
+
   status "Merging into $merge_branch"
   git fetch origin $merge_branch
   git checkout -q FETCH_HEAD
@@ -219,7 +219,7 @@ function push_to_merge_branch {
   git commit -m "Queuing merge: $branch into $target_branch"
   status "Queuing merge by pushing $merge_branch"
   git push origin HEAD:refs/heads/$merge_branch
- 
+
   if [ $? = 0 ] ; then
     start_build
   else
