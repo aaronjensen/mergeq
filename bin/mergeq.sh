@@ -36,6 +36,7 @@
 # merged in ahead of the one they are merging, the build will fail.
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 target_branch=$1
 merge_branch=${2:-"merge/$target_branch"}
 red='\033[0;31m'
@@ -45,8 +46,8 @@ cyan='\033[0;36m'
 blue='\033[0;34m'
 default='\033[0m'
 
-project_dir=".mergeq"
-hooks_dir="$project_dir/hooks"
+source $DIR/mergeq_common.sh
+
 merging_file="$project_dir/merging"
 
 function validate_parameters {
@@ -78,19 +79,6 @@ function exit_if_local_mods {
   fi
 
   return 0
-}
-
-# example: run_hook after
-function run_hook {
-  hook_name=$1
-  hook="$hooks_dir/$hook_name"
-
-  [[ -f $hook ]] || return 0
-
-  status "Running hook: $hook_name..."
-
-  eval "$hook \"$target_branch\" \"$merge_branch\""
-  [[ $? -eq 0 ]] || exit $?
 }
 
 function merge_failed {
