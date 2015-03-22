@@ -199,6 +199,7 @@ function continue_merge {
   exit_if_we_have_already_been_merged
   push_to_merge_branch
 
+  cleanup
   echo -e "${green}// Done!${default}"
 }
 
