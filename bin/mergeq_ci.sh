@@ -105,7 +105,7 @@ function push {
   status "Pushing to $target_branch..."
   git push origin HEAD:$target_branch
 
-  run_hook "after_ci_push" # delete_feature_branch
+  run_hook "after_ci_push"
 }
 
 function validate_parameters {
@@ -116,7 +116,7 @@ function validate_parameters {
 
 validate_parameters
 
-run_hook "before_ci_startup" # check_dependencies
+run_hook "before_ci_startup"
 
 if [ "$action" = "merge" ] ; then
   merge
