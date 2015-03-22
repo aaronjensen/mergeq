@@ -16,13 +16,13 @@ function ensure_mergeq_dir {
 }
 
 function gitignore_merging_file {
-  gitignore_file=$project_dir/.gitignore
+  gitignore_file=$project_dir/.mergeq/.gitignore
 
   if [ ! -f $gitignore_file ]; then
     touch $gitignore_file
   fi
 
-  ignore=".mergeq/merging"
+  ignore="merging"
 
   if ! grep -q $ignore $gitignore_file ; then
     echo $ignore >> $gitignore_file
