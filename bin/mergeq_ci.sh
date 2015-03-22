@@ -21,8 +21,8 @@ target_branch=$2
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-project_dir=".mergeq"
-hooks_dir="$project_dir/hooks"
+mergeq_dir=".mergeq"
+hooks_dir="$mergeq_dir/hooks"
 
 function run_hook {
   hook_name=$1

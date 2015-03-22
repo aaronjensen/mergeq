@@ -46,10 +46,10 @@ cyan='\033[0;36m'
 blue='\033[0;34m'
 default='\033[0m'
 
-project_dir=".mergeq"
-merging_file="$project_dir/merging"
+mergeq_dir=".mergeq"
+merging_file="$mergeq_dir/merging"
 
-hooks_dir="$project_dir/hooks"
+hooks_dir="$mergeq_dir/hooks"
 
 function run_hook {
   hook_name=$1
@@ -126,6 +126,10 @@ function try_to_merge {
   git merge --no-ff $branch -m "Merge $branch into $target_branch" || merge_failed
 }
 
+function ensure_mergeq_dir_exists {
+  mkdir -p $mergeq_dir
+}
+
 function write_temp_file {
   status "Writing temp file..."
   echo "$branch;$merge_branch;$target_branch" > $merging_file
@@ -141,6 +145,7 @@ function start_merge {
 
   branch=`git rev-parse --abbrev-ref HEAD`
 
+  ensure_mergeq_dir_exists
   checkout_target_branch
   write_temp_file
   try_to_merge
