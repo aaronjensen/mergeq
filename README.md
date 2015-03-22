@@ -19,6 +19,7 @@ Or install it yourself as:
 ## Usage
 
 Add `.mergeq/merging` to your project's `.gitignore`
+Create the merge target `merge/staging`
 
 
 ## Pausing Guard
