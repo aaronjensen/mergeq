@@ -20,7 +20,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $DIR/mergeq_common.sh
 
 function print_usage_and_exit {
-  echo "Usage: mergeq_ci <merge|push> <target-branch>"
+  echo "Usage: $0 <merge|push> <target-branch>"
   exit 1
 }
 

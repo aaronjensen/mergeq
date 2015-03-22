@@ -53,7 +53,7 @@ merging_file="$project_dir/merging"
 function validate_parameters {
   if [ -f $merging_file ] ; then
     echo -e "${red}It looks like you're in the middle of a merge.${default}
-If so, try ${blue}mergeq --continue${default}
+If so, try ${blue}$0 --continue${default}
 If not, delete the ${blue}$merging_file${default} file and try again."
     exit 1
   fi
@@ -63,7 +63,7 @@ If not, delete the ${blue}$merging_file${default} file and try again."
 }
 
 function print_usage_and_exit {
-  echo -e "Usage: ${blue}mergeq <target-branch> [merge-branch]${default}"
+  echo -e "Usage: ${blue}$0 <target-branch> [merge-branch]${default}"
   exit 1
 }
 
@@ -86,7 +86,7 @@ function merge_failed {
   echo
   echo 1. Fix your merge conflicts
   echo 2. Commit them
-  echo -e "3. Run ${blue}mergeq --continue${default}"
+  echo -e "3. Run ${blue}$0 --continue${default}"
 
   exit 1
 }
@@ -205,7 +205,7 @@ if [ "$target_branch" = "--continue" ] ; then
 ${yellow}**********************************************************${default}
 
  It doesn't look like you're in the middle of a merge.
- Try ${blue}mergeq <branch name>${default} to start one
+ Try ${blue}$0 <branch name>${default} to start one
 
 ${yellow}**********************************************************${default}"
     exit 1
