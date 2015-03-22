@@ -33,6 +33,15 @@ Create branches that you want to make queueable. This example creates a branch c
 
 ## Configuring CI
 
+There are a few things to take into account when using mergeq on your CI server.
+
+* Only one build per branch can run at once. With TeamCity, you can "Limit the number of simultaneously running builds" to 1.
+* You need to run a build for every push rather than just the most recent. With TeamCity, we do this by disabling VCS build triggering and starting the build automatically via a webhook like this:
+    
+    ```bash
+    curl --insecure "https://user:pass@teamcity.server.com/httpAuth/action.html?add2Queue=$build_id&name=GIT_REF&value=$git_ref"
+    ```
+
 You'll need to add two steps to your CI for mergeq.
 
 1. First step will merge before testing. 
