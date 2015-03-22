@@ -46,9 +46,22 @@ cyan='\033[0;36m'
 blue='\033[0;34m'
 default='\033[0m'
 
-source $DIR/mergeq_common.sh
-
+project_dir=".mergeq"
 merging_file="$project_dir/merging"
+
+hooks_dir="$project_dir/hooks"
+
+function run_hook {
+  hook_name=$1
+  hook="$hooks_dir/$hook_name"
+
+  [[ -f $hook ]] || return 0
+
+  status "Running hook: $hook_name..."
+
+  eval "$hook \"$target_branch\" \"$merge_branch\""
+  [[ $? -eq 0 ]] || exit $?
+}
 
 function validate_parameters {
   if [ -f $merging_file ] ; then

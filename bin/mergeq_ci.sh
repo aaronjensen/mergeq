@@ -13,11 +13,28 @@
 # It has two modes, one is to do the merge, run before the build, the other is
 # to push, which is run after the build. I'm not really sure why it needs
 # to handle the push, I don't think it does anything special.
+
 set -e
+
 action=$1
+target_branch=$2
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $DIR/mergeq_common.sh
+
+project_dir=".mergeq"
+hooks_dir="$project_dir/hooks"
+
+function run_hook {
+  hook_name=$1
+  hook="$hooks_dir/$hook_name"
+
+  [[ -f $hook ]] || return 0
+
+  status "Running CI hook: $hook_name..."
+
+  eval "$hook \"$target_branch\""
+  [[ $? -eq 0 ]] || exit $?
+}
 
 function print_usage_and_exit {
   echo "Usage: $0 <merge|push> <target-branch>"
@@ -96,8 +113,6 @@ function validate_parameters {
     print_usage_and_exit
   fi
 }
-
-target_branch=$2
 
 validate_parameters
 
