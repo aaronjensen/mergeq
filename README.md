@@ -33,7 +33,31 @@ Create branches that you want to make queueable. This example creates a branch c
 
 ## Configuring CI
 
-TODO: write this
+You'll need to add two steps to your CI for mergeq.
+
+1. First step will merge before testing. 
+
+    `%GIT_REF%` is the sha of the queue commit to merge. This will be the tip of the `merge/staging` branch and look like:
+
+    ```
+    cf629af - Queuing merge: feature/mergeq-check-acceptance into integration (8 weeks ago) <Somebody>
+    ```
+
+    `%BRANCH%` is the name of the target branch. If the queue branch is `merge/staging`, the target branch is `staging`.
+
+    Your CI script should look something like:
+
+    ```bash
+    $ git reset --hard %GIT_REF%
+    $ bin/mergeq_ci merge %BRANCH%
+    ```
+    
+2. Then your CI should run build/tests. 
+3. If successful, it should: 
+    
+    ```bash
+    $ bin/mergeq_ci push %BRANCH%
+    ```
 
 ## Hooking mergeq
 
