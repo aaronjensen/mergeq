@@ -18,7 +18,8 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Add `.mergeq/merging` to your project's `.gitignore`
+
 
 ## Pausing Guard
 

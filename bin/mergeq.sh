@@ -44,7 +44,10 @@ green='\033[0;32m'
 cyan='\033[0;36m'
 blue='\033[0;34m'
 default='\033[0m'
-hooks_dir=".mergeq/hooks"
+
+project_dir=".mergeq"
+hooks_dir="$project_dir/hooks"
+merging_file="$project_dir/merging"
 
 function stop_zeus {
   pid=$(zeus_pid)
@@ -89,10 +92,10 @@ function start_build {
 # END teamcity
 
 function validate_parameters {
-  if [ -f .merging ] ; then
+  if [ -f $merging_file ] ; then
     echo -e "${red}It looks like you're in the middle of a merge.${default}
 If so, try ${blue}mergeq --continue${default}
-If not, delete the ${blue}.merging${default} file and try again."
+If not, delete the ${blue}$merging_file${default} file and try again."
     exit 1
   fi
   if [ "$target_branch" = "" ] ; then
@@ -153,7 +156,7 @@ function checkout_target_branch {
 
 function cleanup {
   git checkout -q $branch
-  rm .merging
+  rm $merging_file
 
   run_hook "after_merge"
 }
@@ -166,7 +169,7 @@ function try_to_merge {
 
 function write_temp_file {
   status "Writing temp file..."
-  echo "$branch;$merge_branch;$target_branch" > .merging
+  echo "$branch;$merge_branch;$target_branch" > $merging_file
 }
 
 function start_merge {
@@ -243,8 +246,8 @@ function continue_merge {
 }
 
 if [ "$target_branch" = "--continue" ] ; then
-  if [ -f .merging ] ; then
-    IFS=';' read -ra branches < .merging
+  if [ -f $merging_file ] ; then
+    IFS=';' read -ra branches < $merging_file
     branch=${branches[0]}
     merge_branch=${branches[1]}
     target_branch=${branches[2]}
