@@ -121,8 +121,8 @@ function exit_if_local_mods {
 
 # example: run_hook after
 function run_hook {
-  hook_name = $1
-  hook = "$hooks_dir/$hook_name"
+  hook_name=$1
+  hook="$hooks_dir/$hook_name"
 
   [[ -f $hook ]] || return 0
 
