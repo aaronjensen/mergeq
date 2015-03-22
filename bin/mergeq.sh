@@ -145,9 +145,11 @@ function start_merge {
 
   branch=`git rev-parse --abbrev-ref HEAD`
 
-  ensure_mergeq_dir_exists
   checkout_target_branch
+
+  ensure_mergeq_dir_exists
   write_temp_file
+
   try_to_merge
 
   continue_merge
