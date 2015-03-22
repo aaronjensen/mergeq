@@ -28,11 +28,8 @@ Ignore the merging lock file in git
 Create branches that you want to make queueable. This example creates a branch called
 `staging` for queuing builds.
 
-    $ cd your_project && git checkout master
-    $ git checkout -b staging
-    $ git push -u origin staging
-    $ git checkout -b merge/staging
-    $ git push -u origin merge/staging
+    $ git push origin master:staging
+    $ git push origin master:merge/staging
 
 ## Configuring CI
 
