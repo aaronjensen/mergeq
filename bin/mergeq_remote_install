@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+set -e
 
 red='\033[0;31m'
 yellow='\033[0;33m'
@@ -16,6 +18,7 @@ rm -fr /tmp/mergeq
 
 status "Fetching mergeq from aaronjensen/mergeq..."
 git clone git@github.com:aaronjensen/mergeq.git /tmp/mergeq
+echo
 
 status "Installing mergeq to current project directory"
 /tmp/mergeq/bin/mergeq_install
