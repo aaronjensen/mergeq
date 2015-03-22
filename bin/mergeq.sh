@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
- 
+
 # script/mergeq
 #
 # This starts a "merge" build on your CI server. Rather than allowing untested
@@ -44,6 +44,7 @@ green='\033[0;32m'
 cyan='\033[0;36m'
 blue='\033[0;34m'
 default='\033[0m'
+hooks_dir=".mergeq/hooks"
 
 function stop_zeus {
   pid=$(zeus_pid)
@@ -118,60 +119,63 @@ function exit_if_local_mods {
   return 0
 }
 
-function run_hooks {
-  # Skip hooks if directory does not exist.
-  [[ -d script/mergeq.d ]] || return 0
- 
-  # Run hooks. If hook exits with non-zero, exit mergeq with that exit code.
-  for hook in script/mergeq.d/*; do
-    eval "$hook \"$target_branch\" \"$merge_branch\""
-    [[ $? -eq 0 ]] || exit $?
-  done
+# example: run_hook after
+function run_hook {
+  hook_name = $1
+  hook = "$hooks_dir/$hook_name"
+
+  [[ -f $hook ]] || return 0
+
+  status "Running mergeq hook $hook_name..."
+
+  eval "$hook \"$target_branch\" \"$merge_branch\""
+  [[ $? -eq 0 ]] || exit $?
 }
- 
+
 function merge_failed {
   echo -e "${yellow}Doh. Your merge has conflicts, but don't worry:${default}"
   echo
   echo 1. Fix your merge conflicts
   echo 2. Commit them
   echo -e "3. Run ${blue}mergeq --continue${default}"
- 
+
   exit 1
 }
- 
+
 function checkout_target_branch {
   status "Checking out $target_branch..."
- 
+
   git fetch origin $target_branch
   git checkout -q FETCH_HEAD
   git reset --hard
   git clean -f
 }
- 
+
 function cleanup {
   git checkout -q $branch
   rm .merging
-  start_zeus
-  unpause_guard
+
+  run_hook "after_merge"
 }
- 
+
 function try_to_merge {
   status "Merging $branch into $target_branch"
- 
+
   git merge --no-ff $branch -m "Merge $branch into $target_branch" || merge_failed
 }
- 
+
 function write_temp_file {
   status "Writing temp file..."
   echo "$branch;$merge_branch;$target_branch" > .merging
 }
- 
+
 function start_merge {
   status "Starting merge..."
   set -e
 
   exit_if_local_mods
-  run_hooks
+
+  run_hook "before_merge"
 
   branch=`git rev-parse --abbrev-ref HEAD`
 
@@ -211,12 +215,14 @@ function push_to_merge_branch {
   git fetch origin $merge_branch
   git checkout -q FETCH_HEAD
   git merge --no-ff -s ours --no-commit $current
+
   # make the merge branch match exactly before committing the merge
   # we do this so that bundle install will work when upgrading mergeq (ew)
   git checkout $current -- .
   echo $current > .merge
   git add .
   git commit -m "Queuing merge: $branch into $target_branch"
+
   status "Queuing merge by pushing $merge_branch"
   git push origin HEAD:refs/heads/$merge_branch
 
@@ -236,14 +242,13 @@ function continue_merge {
   cleanup
 }
 
-stop_zeus
 if [ "$target_branch" = "--continue" ] ; then
   if [ -f .merging ] ; then
     IFS=';' read -ra branches < .merging
     branch=${branches[0]}
     merge_branch=${branches[1]}
     target_branch=${branches[2]}
- 
+
     status "Continuing merge..."
     continue_merge
   else
