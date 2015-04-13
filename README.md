@@ -1,6 +1,6 @@
 # mergeq
 
-TODO: Write a project description
+Get your CI (like TeamCity) to merge after builds pass with a queue of gated merges.
 
 ## Remote Installation (quick)
 
