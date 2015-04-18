@@ -107,8 +107,7 @@ function merge_failed {
 function checkout_target_branch {
   status "Checking out $target_branch..."
 
-  git fetch origin $target_branch
-  git checkout -q FETCH_HEAD
+  git checkout -q origin/$target_branch
   git reset --hard
   git clean -f
 }
@@ -144,6 +143,7 @@ function start_merge {
   run_hook "before_merge"
 
   branch=`git rev-parse --abbrev-ref HEAD`
+  git fetch origin
 
   checkout_target_branch
 
@@ -161,8 +161,7 @@ function push_failed {
 
 function exit_if_we_have_already_been_merged {
   set +e
-  git fetch origin $target_branch
-  git diff --quiet FETCH_HEAD
+  git diff --quiet origin/$target_branch
   if [ $? -eq 0 ]
   then
     echo "
@@ -181,8 +180,7 @@ function push_to_merge_branch {
   current=`git rev-parse HEAD`
 
   status "Merging into $merge_branch"
-  git fetch origin $merge_branch
-  git checkout -q FETCH_HEAD
+  git checkout -q origin/$merge_branch
   git merge --no-ff -s ours --no-commit $current
 
   # make the merge branch match exactly before committing the merge
