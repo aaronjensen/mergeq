@@ -1,6 +1,22 @@
 # mergeq
 
-Get your CI (like TeamCity) to merge after builds pass with a queue of gated merges.
+Have you ever broken the build? Have you ever had to wait for a teammate to fix
+the build so that you can deploy your change that won't break the build?
+
+mergeq can help by only allowing branches that pass CI to get merged into
+`master` or `develop` or whatever. If your build doesn't pass, the branch you
+are trying to merge into doesn't change and no one else is affected.
+
+## How it works
+
+Say you have a branch, `feature` that you want to merge into `master`. Instead
+of merging directly to `master`, you run `mergeq master`. `mergeq` will fetch
+the latest `master` from `origin` and merge your branch into it. You can
+resolve any merge conflicts and then `mergeq` will push the merged branch to a
+special branch called `merge/master`. Your CI server will pick up changes from
+that branch, run the build, and if it passes, push the merge to `master`. If it
+fails, it will do nothing else and your failing build won't get in anyone's
+way. Merge away!
 
 ## Remote Installation (quick)
 
