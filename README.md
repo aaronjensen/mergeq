@@ -1,5 +1,7 @@
 # mergeq
 
+![mergeq explanatory comic](http://i.imgur.com/2iDn1qu.png)
+
 Have you ever broken the build? Have you ever had to wait for a teammate to fix
 the build so that you can deploy your change that won't break the build?
 
