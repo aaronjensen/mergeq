@@ -9,6 +9,16 @@ mergeq can help by only allowing branches that pass CI to get merged into
 `master` or `develop` or whatever. If your build doesn't pass, the branch you
 are trying to merge into doesn't change and no one else is affected.
 
+mergeq is an implementation of the "pre-tested commit" pattern that is:
+
+* **Robust**--two people can merge at the same time and, as long as their branches do not conflict with one another, they both get a chance to get merged in safely.
+* **Continuous Integration server independent**--as long as your server has permission to push to your repo and can support running only one build at a time, it should work.
+* **Flexible**--there are [hooks](#hooking-mergeq) to support safety checks or post build notifications.
+* **Easy to setup**--no additional intermediary repository, no additional infratructure
+* **Battle tested**--we have been using it for over 3 years with great success.
+
+If you want strict **pre-reviewed**, as well as pre-tested commits, and you don't mind additional infrastructure, you can check out [Gerrit](https://www.gerritcodereview.com/).
+
 ## How it works
 
 Say you have a branch, `feature` that you want to merge into `master`. Instead
