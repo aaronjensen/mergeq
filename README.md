@@ -115,6 +115,7 @@ a per-repo basis.
 
 * `before_ci_startup` - this runs at the very beginning of the `mergeq_ci` script
 * `after_ci_merge` - this runs after CI merges into the target branch
+* `before_ci_push` - this runs before CI pushes the target branch back to origin
 * `after_ci_push` - this runs after CI pushes the target branch back to origin
 
 All hooks live in `$project_dir/.mergeq/hooks/$hook_name`, and need to have `chmod +x` 

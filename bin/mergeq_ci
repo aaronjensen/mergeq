@@ -102,6 +102,8 @@ function merge {
 }
 
 function push {
+  run_hook "before_ci_push"
+
   status "Pushing to $target_branch..."
   git push origin HEAD:$target_branch
 
