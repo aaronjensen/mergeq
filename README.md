@@ -50,7 +50,7 @@ Running `mergeq_remote_install` will add a few files, so be sure to commit them 
 
     $ git status
     $ git add .
-    $ git commit -m "Added mergeq to the project"
+    $ git commit -m "Add mergeq to the project"
 
 Next, create branches that you want to make queueable. This example creates a branch 
 called `staging` for queuing builds.
