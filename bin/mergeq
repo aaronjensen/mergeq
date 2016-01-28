@@ -181,14 +181,17 @@ function push_to_merge_branch {
 
   status "Merging into $merge_branch"
   git checkout -q origin/$merge_branch
-  git merge --no-ff -s ours --no-commit $current
+  git merge --no-ff --no-edit -s ours -m "Queuing merge: $branch into $target_branch" $current
+  merged=`git rev-parse HEAD`
 
   # make the merge branch match exactly before committing the merge
-  # we do this so that bundle install will work when upgrading mergeq (ew)
-  git checkout $current -- .
+  # see: http://stackoverflow.com/a/27338013/11229
+  git checkout -q $current
+  git reset --soft $merged
+
   echo $current > .merge
   git add .
-  git commit -m "Queuing merge: $branch into $target_branch"
+  git commit --amend -C HEAD
 
   status "Queuing merge by pushing $merge_branch"
   git push origin HEAD:refs/heads/$merge_branch
