@@ -140,10 +140,10 @@ function start_merge {
 
   exit_if_local_mods
 
+  git fetch origin
   run_hook "before_merge"
 
   branch=`git rev-parse --abbrev-ref HEAD`
-  git fetch origin
 
   checkout_target_branch
 
