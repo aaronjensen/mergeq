@@ -93,8 +93,9 @@ function merge {
   head=`git rev-parse HEAD^2`
 
   checkout_target_branch
-  merge_branch_into_target_branch
 
+  run_hook "before_ci_merge"
+  merge_branch_into_target_branch
   run_hook "after_ci_merge"
 
   reset_and_exit_if_we_have_already_been_merged
